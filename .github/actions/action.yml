@@ -832,7 +832,7 @@ runs:
         KSU_VERSION=$(expr $COMMITS_COUNT "+" $BASE_VERSION)
         sed -i "s/DKSU_VERSION=11998/DKSU_VERSION=${KSU_VERSION}/" Makefile
         
-        sed -i 's/#if defined(CONFIG_STACKPROTECTOR) && (defined(CONFIG_ARM64) && !defined(CONFIG_STACKPROTECTOR_PER_TASK))/#if 0/' core/init.c
+        sed -i '/#if defined(CONFIG_STACKPROTECTOR)/,/) *$/ { /) *$/ s/.*/#if 0/; t; d }' core/init.c
         
         if [ "$KSU_VERSION" -lt 12884 ]; then
           echo "NEED_HOOKS=true" >> $GITHUB_ENV
